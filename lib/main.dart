@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:convert';
 
+import 'package:petrol_finder/data/PetrolStation.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
@@ -17,7 +19,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
-  final petrolStations = FirebaseDatabase(databaseURL:"https://petrol-shortage-guide-default-rtdb.europe-west1.firebasedatabase.app/").reference().child('petrolstations');
+  final petrolStationsDatabase = FirebaseDatabase(databaseURL:"https://petrol-shortage-guide-default-rtdb.europe-west1.firebasedatabase.app/").reference().child('petrolstations');
+  //final List<PetrolStation> petrolStations = <PetrolStation>[];
+  final Set<Marker> markers = Set();
 
   bool _initialized = false;
   bool _error = false;
@@ -52,11 +56,28 @@ class _MyAppState extends State<MyApp> {
   }
   void _activateListeners()
   {
-    petrolStations.onChildAdded.listen((event)
+    petrolStationsDatabase.onChildAdded.listen((event)
     {
-      final dataSnapshot = event.snapshot;
-      final String AddressSAMPLE = event.snapshot.value.toString();
-      debugPrint(AddressSAMPLE);
+      if(event.snapshot.key==null) {
+        return;
+      }
+
+      final PetrolStation petrolStation = PetrolStation.fromJson(event.snapshot.value);
+      debugPrint(event.snapshot.key);
+      debugPrint(petrolStation.address);
+      debugPrint(petrolStation.latitude.toString());
+
+      markers.add(Marker(
+        markerId: MarkerId(event.snapshot.key==null?"ERROR":event.snapshot.key!),
+        position: LatLng(petrolStation.latitude, petrolStation.longitude),
+        infoWindow: InfoWindow(
+          title: petrolStation.operator+" petrol station at "+petrolStation.address,
+          snippet: petrolStation.dieselavail?"Has diesel":"NO DIESEL",
+        ),
+          icon:BitmapDescriptor.defaultMarker,
+      ));
+      //petrolStations.add(petrolStation);
+      //debugPrint(petrolStations.length.toString());
     });
   }
 
@@ -92,6 +113,7 @@ class _MyAppState extends State<MyApp> {
             target: _center,
             zoom: 11.0,
           ),
+          markers: this.markers,
         ),
       ),
     );
