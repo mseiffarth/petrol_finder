@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "770863376119",
+    "firebase_url": "https://petrol-shortage-guide-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "petrol-shortage-guide",
+    "storage_bucket": "petrol-shortage-guide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770863376119:android:edcb8d04aa441e0b5715f2",
+        "android_client_info": {
+          "package_name": "com.barbicansoftware.petrol_finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770863376119-a7ie4vh66d83uue3tgglvq39ssat51ch.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmpgS6ifi4V65tn-_QUBts1UJYiqHYOwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770863376119-a7ie4vh66d83uue3tgglvq39ssat51ch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
